@@ -1,5 +1,6 @@
 """数据加载与预处理：IMDB 影评二分类。"""
 import json
+import os
 import re
 from collections import Counter
 
@@ -32,6 +33,7 @@ def build_vocab(texts, max_size=C.MAX_VOCAB_SIZE):
 
 
 def save_vocab(vocab, path):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
         json.dump(vocab, f, ensure_ascii=False)
 
@@ -50,8 +52,9 @@ def text_to_ids(text, vocab):
 
 
 def collate_fn(batch, vocab):
-    """DataLoader 批处理：把原始文本转成张量。"""
-    texts, labels = zip(*batch)
+    """DataLoader 批处理：把原始文本转成张量。batch 为 dict 列表。"""
+    texts = [item["text"] for item in batch]
+    labels = [item["label"] for item in batch]
     text_tensor = torch.tensor(
         [text_to_ids(t, vocab) for t in texts], dtype=torch.long
     )

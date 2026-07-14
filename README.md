@@ -39,6 +39,14 @@ pip install -r requirements.txt
 python train.py
 ```
 
+> 国内用户如遇 HuggingFace 数据集下载失败，可设置镜像：
+> ```bash
+> # Linux/macOS
+> export HF_ENDPOINT=https://hf-mirror.com
+> # Windows PowerShell
+> $env:HF_ENDPOINT="https://hf-mirror.com"
+> ```
+
 训练 5 个 epoch 后，在测试集上一般可达 **86%+** 准确率。
 
 ### 2. 交互式推理

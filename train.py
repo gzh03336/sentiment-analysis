@@ -4,7 +4,7 @@ import torch.nn as nn
 from tqdm import tqdm
 
 import config as C
-from data.dataset import get_dataloaders, save_vocab
+from data.dataset import get_dataloaders
 from model.textcnn import TextCNN
 from utils import get_device, evaluate, save_model
 
@@ -15,11 +15,6 @@ def main():
 
     train_loader, test_loader, vocab = get_dataloaders()
     print(f"词表大小: {len(vocab)}")
-
-    # 保存词表，供推理使用
-    import os
-    os.makedirs(C.CHECKPOINT_DIR, exist_ok=True)
-    save_vocab(vocab, C.VOCAB_PATH)
 
     model = TextCNN(vocab_size=len(vocab)).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=C.LEARNING_RATE)
